@@ -11,7 +11,7 @@ public class CoreHttpClientTest {
 
         HttpResponse response = null;
         try {
-            response = CoreHttpClient.makeGetRequest("https://my.staging.shotli.app/workspace/WV3Bk/folder/FOV3Bl", null, HttpResponse.class);
+            response = CoreHttpClient.makeGetRequest("https://amazon.in", null, HttpResponse.class);
         } catch (JavaCoreException e) {
             e.printStackTrace();
         }
