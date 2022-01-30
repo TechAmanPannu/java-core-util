@@ -1,6 +1,6 @@
 package com.core.util.http.retry;
 
-import com.core.util.exception.JavaCoreException;
+import com.core.util.exception.CoreException;
 
 import java.io.Serializable;
 import java.util.Random;
@@ -23,7 +23,7 @@ public class RetryPolicy implements Serializable {
         this.maxBackOffDelayMillis = 1024000;
     }
 
-    public <T> T retry(RetryExecutor<T> retryExecutor) throws JavaCoreException {
+    public <T> T retry(RetryExecutor<T> retryExecutor) throws CoreException {
         if(retryExecutor == null) { return null; }
         int attempt = 0;
         T response = null;
@@ -33,7 +33,7 @@ public class RetryPolicy implements Serializable {
             System.out.println("Attempt : " + attempt);
         try {
             response =  retryExecutor.execute();
-        } catch (JavaCoreException e) {
+        } catch (CoreException e) {
            if(!e.isServerError()) { throw e; }
             tryAgain =  attempt <= retryCount;
         }
@@ -45,7 +45,7 @@ public class RetryPolicy implements Serializable {
                 }
             }
         } while (tryAgain);
-        if(response == null) { throw new JavaCoreException(500, "something went wrong"); }
+        if(response == null) { throw new CoreException(500, "something went wrong"); }
         return response;
     }
 

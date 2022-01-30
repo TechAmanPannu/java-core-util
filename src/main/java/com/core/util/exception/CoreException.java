@@ -14,7 +14,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 @ToString
-public class JavaCoreException extends Exception {
+public class CoreException extends Exception {
 
     private ErrorModel error;
 
@@ -24,26 +24,26 @@ public class JavaCoreException extends Exception {
 
     private long responseTimeMillis;
 
-    public JavaCoreException(String message) {
+    public CoreException(String message) {
         super(message);
     }
 
-    public JavaCoreException(String message, int statusCode, long responseTimeMillis) {
+    public CoreException(String message, int statusCode, long responseTimeMillis) {
         super(message);
         this.statusCode = statusCode;
         this.responseTimeMillis = responseTimeMillis;
     }
 
-    public JavaCoreException(String message, Throwable cause) {
+    public CoreException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public JavaCoreException(int statusCode, String message) {
+    public CoreException(int statusCode, String message) {
         super(message);
         setStatusCode(statusCode);
     }
 
-    public JavaCoreException apiResponse(ErrorModel error) {
+    public CoreException apiResponse(ErrorModel error) {
         this.error = error;
         return this;
     }

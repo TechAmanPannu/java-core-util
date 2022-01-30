@@ -1,6 +1,6 @@
 package com.core.util.http.retry;
 
-import com.core.util.exception.JavaCoreException;
+import com.core.util.exception.CoreException;
 
 /**
  * @author Amandeep Singh
@@ -9,6 +9,6 @@ import com.core.util.exception.JavaCoreException;
 @FunctionalInterface
 public interface RetryExecutor<T> {
 
-     T execute() throws JavaCoreException;
+     T execute() throws CoreException;
 }
 

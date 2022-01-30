@@ -1,6 +1,6 @@
 package com.core.util.http;
 
-import com.core.util.exception.JavaCoreException;
+import com.core.util.exception.CoreException;
 import com.core.util.http.retry.RetryPolicy;
 import com.core.util.utilities.QueryParams;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -20,24 +20,24 @@ public final class CoreHttpClient {
 
     }
 
-    public static <T> T makeRequest(ApiRequest<T> request) throws JavaCoreException {
+    public static <T> T makeRequest(ApiRequest<T> request) throws CoreException {
         return URLFetcher.makeRequest(request);
     }
 
-    public static <T> T makeRequest(HttpMethod method, String url, Object payload, Class<T> responseType) throws JavaCoreException {
+    public static <T> T makeRequest(HttpMethod method, String url, Object payload, Class<T> responseType) throws CoreException {
         return makeRequest(method, url, null, payload, null, responseType);
     }
 
-    public static <T> T makeRequest(HttpMethod method, String url, QueryParams queryParams, Object payload, Map<String, String> headers, Class<T> responseType) throws JavaCoreException {
+    public static <T> T makeRequest(HttpMethod method, String url, QueryParams queryParams, Object payload, Map<String, String> headers, Class<T> responseType) throws CoreException {
         ApiRequest<T> request = constructRequest(method, url, queryParams, payload, headers, responseType);
         return makeRequest(request);
     }
 
-    public static <T> T makeRequest(HttpMethod method, String url, Object payload, Class<T> responseType, RetryPolicy retryPolicy) throws JavaCoreException {
+    public static <T> T makeRequest(HttpMethod method, String url, Object payload, Class<T> responseType, RetryPolicy retryPolicy) throws CoreException {
         return makeRequest(method, url, null, payload, null, responseType, retryPolicy);
     }
 
-    public static <T> T makeRequest(HttpMethod method, String url, QueryParams queryParams, Object payload, Map<String, String> headers, Class<T> responseType, RetryPolicy retryPolicy) throws JavaCoreException {
+    public static <T> T makeRequest(HttpMethod method, String url, QueryParams queryParams, Object payload, Map<String, String> headers, Class<T> responseType, RetryPolicy retryPolicy) throws CoreException {
         if (retryPolicy == null) {
             retryPolicy = RetryPolicy.retryCount();
         }
@@ -46,16 +46,16 @@ public final class CoreHttpClient {
     }
 
 
-    public static <T> T makeGetRequest(String url, QueryParams queryParams, Class<T> responseType) throws JavaCoreException {
+    public static <T> T makeGetRequest(String url, QueryParams queryParams, Class<T> responseType) throws CoreException {
         return makeRequest(HttpMethod.GET, url, queryParams, null, null, responseType);
     }
 
-    public static <T> T makeGetRequest(String url, QueryParams queryParams, Class<T> responseType, RetryPolicy retryPolicy) throws JavaCoreException {
+    public static <T> T makeGetRequest(String url, QueryParams queryParams, Class<T> responseType, RetryPolicy retryPolicy) throws CoreException {
         return makeRequest(HttpMethod.GET, url, queryParams, null, null, responseType, retryPolicy);
     }
 
 
-    private static  <T> ApiRequest<T> constructRequest(HttpMethod method, String url, QueryParams queryParams, Object payload, Map<String, String> headers, Class<T> responseType) throws JavaCoreException {
+    private static  <T> ApiRequest<T> constructRequest(HttpMethod method, String url, QueryParams queryParams, Object payload, Map<String, String> headers, Class<T> responseType) throws CoreException {
         if (queryParams != null)
             url += "?" + queryParams.toQueryString();
         ApiRequest<T> request = null;
@@ -64,7 +64,7 @@ public final class CoreHttpClient {
                     .respContentType(MediaType.JSON)
                     .jsonPayload(payload);
         } catch (JsonProcessingException | MalformedURLException e) {
-            throw new JavaCoreException(e.getMessage(), e);
+            throw new CoreException(e.getMessage(), e);
         }
         if (headers != null)
             request.addAllHeaders(headers);

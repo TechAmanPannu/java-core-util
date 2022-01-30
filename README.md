@@ -17,7 +17,7 @@
 HttpResponse response = null;
         try {
             response = CoreHttpClient.makeGetRequest("https://amazon.in", null, HttpResponse.class);
-        } catch (JavaCoreException e) {
+        } catch (CoreException e) {
             e.printStackTrace();
         }
 

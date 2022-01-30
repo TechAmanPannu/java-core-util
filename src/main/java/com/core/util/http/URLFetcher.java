@@ -1,6 +1,6 @@
 package com.core.util.http;
 
-import com.core.util.exception.JavaCoreException;
+import com.core.util.exception.CoreException;
 import com.core.util.exception.model.ErrorModel;
 import com.core.util.utilities.JacksonMapper;
 import com.core.util.utilities.ObjUtil;
@@ -23,7 +23,7 @@ public class URLFetcher {
 
     private static final JacksonMapper objMapper = new JacksonMapper();
 
-    public static <T> T makeRequest(ApiRequest<T> request) throws JavaCoreException {
+    public static <T> T makeRequest(ApiRequest<T> request) throws CoreException {
         try {
             HttpURLConnection conn = (HttpURLConnection) request.getUrl().openConnection();
             if (request.getMethod().toString().equals("PATCH")) { allowMethods("PATCH"); }
@@ -53,7 +53,7 @@ public class URLFetcher {
             long responseTimeMillis = requestEndTimeMillis - requestStartTimeMillis;
             String respData = streamToString(stream);
             if (respData == null || respData.isEmpty())
-                throw new JavaCoreException("Unable to parse the response body");
+                throw new CoreException("Unable to parse the response body");
             int responseCode = conn.getResponseCode();
             if (responseCode < 200 || responseCode > 399) {
                 ErrorModel error = new ErrorModel(respData);
@@ -63,7 +63,7 @@ public class URLFetcher {
                     System.out.println(msg);
                 }
                 msg = "Status Code " + responseCode + " - " + (msg);
-                JavaCoreException e = new JavaCoreException(msg, responseCode, responseTimeMillis).apiResponse(error);
+                CoreException e = new CoreException(msg, responseCode, responseTimeMillis).apiResponse(error);
                 e.setStatusCode(responseCode);
                 throw e;
             }
@@ -78,7 +78,7 @@ public class URLFetcher {
             if(request.getResponseType() == String.class) { return (T) respData; }
             return ObjUtil.safeConvertJson(respData, request.getResponseType());
         } catch (IOException e) {
-            throw new JavaCoreException(e.getMessage(), e);
+            throw new CoreException(e.getMessage(), e);
         }
     }
 
