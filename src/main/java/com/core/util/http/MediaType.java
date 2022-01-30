@@ -4,19 +4,17 @@ package com.core.util.http;
  * @author Amandeep Singh
  */
 
-public final class MediaType {
+public enum MediaType {
 
-    private MediaType(){
+    JSON("application/json");
 
+    private final String contentType;
+
+    MediaType(String contentType) {
+        this.contentType = contentType;
     }
 
-    /**
-     * A {@code String} constant representing "{@value #APPLICATION_JSON}" media type.
-     */
-    public static final String APPLICATION_JSON = "application/json";
-
-    /**
-     * A {@code String} constant representing "{@value #APPLICATION_JSON}" media type.
-     */
-    public static final String APPLICATION_FORM_URLENCODED = "application/x-www-form-urlencoded";
+    public String getContentType() {
+        return contentType;
+    }
 }

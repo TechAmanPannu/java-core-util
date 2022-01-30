@@ -22,11 +22,11 @@ public class HttpRequest {
 
     private HttpMethod method;
 
-    private String contentType;
-
     private Map<String, String> headers;
 
     private int connectionTimeOut;
+
+    protected MediaType contentType;
 
     /**
      * Instantiates a new Http request.
@@ -93,5 +93,19 @@ public class HttpRequest {
     public String getHeaderValue(String key) {
 
         return this.headers == null ? null : this.headers.get(key);
+    }
+
+    /**
+     * Add All headers.
+     *
+     * @param headers Map</String,String> contains header name and its value
+     */
+    public void addAllHeaders(Map<String, String> headers) {
+
+        if (this.headers == null)
+            this.headers = new HashMap<>();
+
+        if (headers != null)
+            this.headers.putAll(headers);
     }
 }

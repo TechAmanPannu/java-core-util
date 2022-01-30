@@ -14,17 +14,10 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class ErrorModel implements Serializable {
 
-    private String code;
-    private String message;
+    private String error;
 
-    public ErrorModel(ErrorCode errorCode, String message) {
-        this.code = errorCode != null ? errorCode.toString() : null;
-        this.message = message;
-    }
-
-    public ErrorModel(String errorCode, String message) {
-        this.code = errorCode;
-        this.message = message;
+    public ErrorModel(String error) {
+        this.error = error;
     }
 
 }
