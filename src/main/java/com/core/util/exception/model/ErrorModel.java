@@ -1,6 +1,7 @@
 package com.core.util.exception.model;
 
 import com.core.util.exception.enums.ErrorCode;
+import com.core.util.http.HttpResponse;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

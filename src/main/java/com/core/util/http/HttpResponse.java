@@ -2,6 +2,7 @@ package com.core.util.http;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
@@ -10,15 +11,17 @@ import java.util.Map;
  */
 
 @Data
-public class HttpResponse {
+public class HttpResponse implements Serializable {
 
-    private int statusCode;
+    protected int statusCode;
 
-    private String responseContent;
+    protected String responseContent;
 
-    private Map<String, List<String>> headers;
+    protected Map<String, List<String>> headers;
 
-    public boolean wasSuccessful(){
+    protected long responseTimeMillis;
+
+    protected boolean wasSuccessful(){
         return (statusCode >= 200 && statusCode < 299);
     }
 

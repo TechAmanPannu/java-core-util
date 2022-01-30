@@ -15,27 +15,30 @@ import java.util.Map;
  */
 
 
-public class HTTPTrigger {
+public final class CoreHttpClient {
 
+    private CoreHttpClient() {
 
-    protected <T> T makeRequest(ApiRequest<T> request) throws JavaCoreException {
+    }
+
+    public static <T> T makeRequest(ApiRequest<T> request) throws JavaCoreException {
         return URLFetcher.makeRequest(request);
     }
 
-    public <T> T makeRequest(HttpMethod method, String url, Object payload, Class<T> responseType) throws JavaCoreException {
+    public static <T> T makeRequest(HttpMethod method, String url, Object payload, Class<T> responseType) throws JavaCoreException {
         return makeRequest(method, url, null, payload, null, responseType);
     }
 
-    public <T> T makeRequest(HttpMethod method, String url, QueryParams queryParams, Object payload, Map<String, String> headers, Class<T> responseType) throws JavaCoreException {
+    public static <T> T makeRequest(HttpMethod method, String url, QueryParams queryParams, Object payload, Map<String, String> headers, Class<T> responseType) throws JavaCoreException {
         ApiRequest<T> request = constructRequest(method, url, queryParams, payload, headers, responseType);
         return makeRequest(request);
     }
 
-    public <T> T makeRequest(HttpMethod method, String url, Object payload, Class<T> responseType, RetryPolicy retryPolicy) throws JavaCoreException {
+    public static <T> T makeRequest(HttpMethod method, String url, Object payload, Class<T> responseType, RetryPolicy retryPolicy) throws JavaCoreException {
         return makeRequest(method, url, null, payload, null, responseType, retryPolicy);
     }
 
-    public <T> T makeRequest(HttpMethod method, String url, QueryParams queryParams, Object payload, Map<String, String> headers, Class<T> responseType, RetryPolicy retryPolicy) throws JavaCoreException {
+    public static <T> T makeRequest(HttpMethod method, String url, QueryParams queryParams, Object payload, Map<String, String> headers, Class<T> responseType, RetryPolicy retryPolicy) throws JavaCoreException {
         if (retryPolicy == null) {
             retryPolicy = RetryPolicy.retryCount();
         }
@@ -44,16 +47,16 @@ public class HTTPTrigger {
     }
 
 
-    public <T> T makeGetRequest(String url, QueryParams queryParams, Class<T> responseType) throws JavaCoreException {
+    public static <T> T makeGetRequest(String url, QueryParams queryParams, Class<T> responseType) throws JavaCoreException {
         return makeRequest(HttpMethod.GET, url, queryParams, null, null, responseType);
     }
 
-    public <T> T makeGetRequest(String url, QueryParams queryParams, Class<T> responseType, RetryPolicy retryPolicy) throws JavaCoreException {
+    public static <T> T makeGetRequest(String url, QueryParams queryParams, Class<T> responseType, RetryPolicy retryPolicy) throws JavaCoreException {
         return makeRequest(HttpMethod.GET, url, queryParams, null, null, responseType, retryPolicy);
     }
 
 
-    private <T> ApiRequest<T> constructRequest(HttpMethod method, String url, QueryParams queryParams, Object payload, Map<String, String> headers, Class<T> responseType) throws JavaCoreException {
+    private static  <T> ApiRequest<T> constructRequest(HttpMethod method, String url, QueryParams queryParams, Object payload, Map<String, String> headers, Class<T> responseType) throws JavaCoreException {
         if (queryParams != null)
             url += "?" + queryParams.toQueryString();
         ApiRequest<T> request = null;

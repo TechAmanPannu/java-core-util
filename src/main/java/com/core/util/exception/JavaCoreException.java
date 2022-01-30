@@ -22,9 +22,16 @@ public class JavaCoreException extends Exception {
 
     private boolean isServerError;
 
+    private long responseTimeMillis;
 
     public JavaCoreException(String message) {
         super(message);
+    }
+
+    public JavaCoreException(String message, int statusCode, long responseTimeMillis) {
+        super(message);
+        this.statusCode = statusCode;
+        this.responseTimeMillis = responseTimeMillis;
     }
 
     public JavaCoreException(String message, Throwable cause) {

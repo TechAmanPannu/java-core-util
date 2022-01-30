@@ -12,9 +12,7 @@ import java.net.HttpURLConnection;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.Arrays;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.*;
 
 
 /**
@@ -28,7 +26,6 @@ public class URLFetcher {
 
     public static <T> T makeRequest(ApiRequest<T> request) throws JavaCoreException {
         try {
-            System.out.println("Url : "+request.getUrl());
             HttpURLConnection conn = (HttpURLConnection) request.getUrl().openConnection();
             if (request.getMethod().toString().equals("PATCH")) { allowMethods("PATCH"); }
             conn.setRequestMethod(request.getMethod().toString());
@@ -39,6 +36,8 @@ public class URLFetcher {
                     conn.setRequestProperty(key, request.getHeaderValue(key));
                 }
             }
+
+            long requestStartTimeMillis = System.currentTimeMillis();
             if (request.getMethod() != HttpMethod.GET) {
                 conn.setRequestProperty("Content-Type", request.getContentType().getContentType());
                 if (request.getPayload() != null) {
@@ -51,20 +50,31 @@ public class URLFetcher {
             }
 
             InputStream stream = getInputStream(conn);
+            long requestEndTimeMillis = System.currentTimeMillis();
+            long responseTimeMillis = requestEndTimeMillis - requestStartTimeMillis;
             String respData = streamToString(stream);
             if (respData == null || respData.isEmpty())
                 throw new JavaCoreException("Unable to parse the response body");
-            if (conn.getResponseCode() < 200 || conn.getResponseCode() > 399) {
+            int responseCode = conn.getResponseCode();
+            if (responseCode < 200 || responseCode > 399) {
                 ErrorModel error = new ErrorModel(respData);
                 String msg = "";
                 if (error != null && !ObjUtil.isBlank(error.getError())) {
                     msg = error.getError();
                     System.out.println(msg);
                 }
-                msg = "Status Code " + conn.getResponseCode() + " - " + (msg);
-                JavaCoreException e = new JavaCoreException(msg).apiResponse(error);
-                e.setStatusCode(conn.getResponseCode());
+                msg = "Status Code " + responseCode + " - " + (msg);
+                JavaCoreException e = new JavaCoreException(msg, responseCode, responseTimeMillis).apiResponse(error);
+                e.setStatusCode(responseCode);
                 throw e;
+            }
+            if(request.getResponseType() == HttpResponse.class) {
+                HttpResponse httpResponse = new HttpResponse();
+                httpResponse.setStatusCode(responseCode);
+                httpResponse.setResponseContent(respData);
+                httpResponse.setResponseTimeMillis(responseTimeMillis);
+               httpResponse.setHeaders(conn.getHeaderFields());
+                return (T) httpResponse;
             }
             if(request.getResponseType() == String.class) { return (T) respData; }
             return ObjUtil.safeConvertJson(respData, request.getResponseType());
