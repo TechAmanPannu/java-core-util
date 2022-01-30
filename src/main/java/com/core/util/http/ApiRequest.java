@@ -1,12 +1,7 @@
-package com.core.util.http.retry;
+package com.core.util.http;
 
-import com.core.util.http.HttpMethod;
-import com.core.util.http.HttpRequest;
-import com.core.util.http.MediaType;
-import com.core.util.utilities.JacksonMapper;
 import com.core.util.utilities.ObjUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

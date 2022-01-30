@@ -2,7 +2,6 @@ package com.core.util.http;
 
 import com.core.util.exception.JavaCoreException;
 import com.core.util.exception.model.ErrorModel;
-import com.core.util.http.retry.ApiRequest;
 import com.core.util.utilities.JacksonMapper;
 import com.core.util.utilities.ObjUtil;
 

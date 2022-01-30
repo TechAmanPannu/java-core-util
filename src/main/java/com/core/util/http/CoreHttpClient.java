@@ -1,7 +1,6 @@
 package com.core.util.http;
 
 import com.core.util.exception.JavaCoreException;
-import com.core.util.http.retry.ApiRequest;
 import com.core.util.http.retry.RetryPolicy;
 import com.core.util.utilities.QueryParams;
 import com.fasterxml.jackson.core.JsonProcessingException;
