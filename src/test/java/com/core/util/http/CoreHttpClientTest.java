@@ -10,13 +10,7 @@ public class CoreHttpClientTest {
     @Test
     public void test() {
 
-        HttpResponse response = null;
-        try {
-            response = CoreHttpClient.makeGetRequest("https://amazon.in", null, HttpResponse.class);
-        } catch (CoreException e) {
-            e.printStackTrace();
-        }
-        Preconditions.checkArgument(ObjUtil.isBlank(null), "Invalid value");
+
     }
 
 }
